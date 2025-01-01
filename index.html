@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your Phone - Stitch Fusion</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
+    <script>
+        (function () {
+            emailjs.init("UKSBW1fy2fzcAEv37"); // Replace with your Public Key
+        })();
+
+        function sendEmail(event) {
+            event.preventDefault();
+
+            const form = document.getElementById("sellPhoneForm");
+            const formData = new FormData(form);
+
+            const templateParams = {
+                name: formData.get("name"),
+                email: formData.get("email"),
+                phone_model: formData.get("phone_model"),
+                imei: formData.get("imei"),
+                carrier_unlocked: formData.get("carrier_unlocked"),
+                icloud_unlocked: formData.get("icloud_unlocked"),
+            };
+
+            emailjs
+                .send("service_txsvj3r", "template_ziffdla", templateParams)
+                .then(
+                    function () {
+                        alert("Your request has been sent successfully!");
+                        form.reset();
+                    },
+                    function (error) {
+                        alert("There was an error sending your request. Please try again.");
+                        console.log(error);
+                    }
+                );
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            margin: 20px auto;
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            margin-top: 5px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .qr-code {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .qr-code img {
+            max-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Sell Your Phone Today - Stitch Fusion</h1>
+    </header>
+    <div class="container">
+        <h2>Get Paid for Your Phone!</h2>
+        <p>Fill out the form below to get started.</p>
+
+        <form id="sellPhoneForm" onsubmit="sendEmail(event)">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+            <label for="email">Your Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+            <label for="phone_model">Phone Model</label>
+            <select id="phone_model" name="phone_model" required>
+                <option value="" disabled selected>Select your phone model</option>
+                <optgroup label="iPhones">
+                    <option value="iPhone 12">iPhone 12</option>
+                    <option value="iPhone 12 Pro">iPhone 12 Pro</option>
+                    <option value="iPhone 12 Pro Max">iPhone 12 Pro Max</option>
+                    <option value="iPhone 13">iPhone 13</option>
+                    <option value="iPhone 13 Pro">iPhone 13 Pro</option>
+                    <option value="iPhone 13 Pro Max">iPhone 13 Pro Max</option>
+                    <option value="iPhone 14">iPhone 14</option>
+                    <option value="iPhone 14 Pro">iPhone 14 Pro</option>
+                    <option value="iPhone 14 Pro Max">iPhone 14 Pro Max</option>
+                    <option value="iPhone 15">iPhone 15</option>
+                    <option value="iPhone 15 Pro">iPhone 15 Pro</option>
+                    <option value="iPhone 16">iPhone 16</option>
+                </optgroup>
+                <optgroup label="Samsung Galaxy">
+                    <option value="Galaxy S20">Galaxy S20</option>
+                    <option value="Galaxy S21">Galaxy S21</option>
+                    <option value="Galaxy S22">Galaxy S22</option>
+                    <option value="Galaxy S23">Galaxy S23</option>
+                    <option value="Galaxy Fold">Galaxy Fold</option>
+                    <option value="Galaxy Flip">Galaxy Flip</option>
+                </optgroup>
+            </select>
+
+            <label for="imei">IMEI or Serial Number</label>
+            <input type="text" id="imei" name="imei" placeholder="Enter IMEI or serial number" required>
+
+            <label for="carrier_unlocked">Carrier Unlocked?</label>
+            <select id="carrier_unlocked" name="carrier_unlocked" required>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+
+            <label for="icloud_unlocked">iCloud or Google Account Unlocked?</label>
+            <select id="icloud_unlocked" name="icloud_unlocked" required>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+
+            <button type="submit">Submit Offer</button>
+        </form>
+
+        <div class="qr-code">
+            <p>Scan to Visit Us:</p>
+            <img src="stitchfusion_qr_code.png" alt="QR Code">
+        </div>
+    </div>
+</body>
+</html>
