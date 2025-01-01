@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your Phone Today</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('background.png') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            color: white;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8); /* Subtle transparency for blending */
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            color: white;
+        }
+        h1 {
+            text-align: center;
+            color: #ffcc00; /* Bright gold to match the money theme */
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            color: #e0e0e0;
+        }
+        input, select, textarea, button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background: rgba(255, 255, 255, 0.1); /* Subtle transparency */
+            color: #ffcc00; /* Text color to match the gold theme */
+        }
+        input::placeholder, textarea::placeholder {
+            color: #ccc;
+        }
+        textarea {
+            height: 100px;
+        }
+        button {
+            background-color: #ff9900; /* Bold gold-orange */
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #cc7a00; /* Darker gold-orange on hover */
+        }
+        .output {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 20px;
+            color: #ffcc00; /* Gold for consistency */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sell Your Phone Today</h1>
+
+        <!-- User Details -->
+        <label for="name">Your Name:</label>
+        <input type="text" id="name" placeholder="Enter your name" required>
+
+        <label for="email">Your Email:</label>
+        <input type="email" id="email" placeholder="Enter your email" required>
+
+        <label for="phone">Your Phone Number:</label>
+        <input type="tel" id="phone" placeholder="Enter your phone number" required>
+
+        <!-- Device Details -->
+        <label for="brand">Device Brand:</label>
+        <select id="brand" onchange="updateModels()">
+            <option value="iPhone">iPhone</option>
+            <option value="Samsung">Samsung</option>
+        </select>
+
+        <label for="model">Device Model:</label>
+        <select id="model"></select>
+
+        <label for="imei-serial">IMEI or Serial Number:</label>
+        <input type="text" id="imei-serial" placeholder="Enter IMEI or Serial Number" required>
+
+        <label for="condition">Device Condition:</label>
+        <select id="condition">
+            <option value="New">New</option>
+            <option value="Like New">Like New</option>
+            <option value="Good">Good</option>
+            <option value="Fair">Fair</option>
+            <option value="Poor">Poor</option>
+        </select>
+
+        <label for="comments">Additional Comments:</label>
+        <textarea id="comments" placeholder="Enter any additional details about the device"></textarea>
+
+        <!-- Submit Button -->
+        <button onclick="submitDeviceDetails()">Submit</button>
+        <div id="output" class="output"></div>
+    </div>
+
+    <script>
+        // Initialize EmailJS with Public Key
+        emailjs.init("UKSBW1fy2fzcAEv37");
+
+        const models = {
+            iPhone: [
+                "iPhone 12", "iPhone 12 Mini", "iPhone 12 Pro", "iPhone 12 Pro Max",
+                "iPhone 13", "iPhone 13 Mini", "iPhone 13 Pro", "iPhone 13 Pro Max",
+                "iPhone 14", "iPhone 14 Plus", "iPhone 14 Pro", "iPhone 14 Pro Max",
+                "iPhone 15", "iPhone 15 Plus", "iPhone 15 Pro", "iPhone 15 Pro Max",
+                "iPhone 16", "iPhone 16 Plus", "iPhone 16 Pro", "iPhone 16 Pro Max"
+            ],
+            Samsung: [
+                "Samsung Galaxy S20", "Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23",
+                "Samsung Galaxy Z Flip 3", "Samsung Galaxy Z Flip 4", "Samsung Galaxy Z Flip 5",
+                "Samsung Galaxy Z Fold 2", "Samsung Galaxy Z Fold 3", "Samsung Galaxy Z Fold 4", "Samsung Galaxy Z Fold 5"
+            ]
+        };
+
+        function updateModels() {
+            const brand = document.getElementById("brand").value;
+            const modelSelect = document.getElementById("model");
+            modelSelect.innerHTML = "";
+
+            models[brand].forEach(model => {
+                const option = document.createElement("option");
+                option.value = model;
+                option.textContent = model;
+                modelSelect.appendChild(option);
+            });
+        }
+
+        window.onload = updateModels;
+
+        function submitDeviceDetails() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+            const brand = document.getElementById("brand").value;
+            const model = document.getElementById("model").value;
+            const imeiSerial = document.getElementById("imei-serial").value;
+            const condition = document.getElementById("condition").value;
+            const comments = document.getElementById("comments").value;
+
+            if (!name || !email || !phone || !brand || !model || !imeiSerial || !condition) {
+                document.getElementById("output").textContent = "Please fill in all required fields.";
+                document.getElementById("output").style.color = "red";
+                return;
+            }
+
+            const emailParams = {
+                name,
+                email,
+                phone,
+                brand,
+                model,
+                imei_serial: imeiSerial,
+                condition,
+                comments
+            };
+
+            emailjs
+                .send("service_txsvj3r", "template_ziffdla", emailParams)
+                .then(response => {
+                    document.getElementById("output").textContent = "Thank you! Your submission has been received.";
+                    document.getElementById("output").style.color = "green";
+                    console.log("Email sent successfully:", response);
+                })
+                .catch(err => {
+                    document.getElementById("output").textContent = "Error submitting form. Please try again.";
+                    document.getElementById("output").style.color = "red";
+                    console.error("Error sending email:", err);
+                });
+        }
+    </script>
+</body>
+</html>
