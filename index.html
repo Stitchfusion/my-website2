@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your Electronics - Stitch Fusion</title>
+    
+    <!-- Google Tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11522601262"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'AW-11522601262');
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
+    <script>
+        (function () {
+            emailjs.init("UKSBW1fy2fzcAEv37");
+        })();
+
+        function updateModels() {
+            const deviceType = document.getElementById("device_type").value;
+            const modelDropdown = document.getElementById("model");
+            const imeiField = document.getElementById("imei");
+            const icloudField = document.getElementById("icloud_unlocked");
+            const commentField = document.getElementById("comment");
+
+            modelDropdown.innerHTML = `<option value="" disabled selected>Select Model</option>`;
+
+            if (deviceType === "iPhone") {
+                const iphoneModels = [
+                    "iPhone 12", "iPhone 12 Mini", "iPhone 12 Pro", "iPhone 12 Pro Max",
+                    "iPhone 13", "iPhone 13 Mini", "iPhone 13 Pro", "iPhone 13 Pro Max",
+                    "iPhone 14", "iPhone 14 Plus", "iPhone 14 Pro", "iPhone 14 Pro Max",
+                    "iPhone 15", "iPhone 15 Plus", "iPhone 15 Pro", "iPhone 15 Pro Max",
+                    "iPhone 16", "iPhone 16 Mini", "iPhone 16 Pro", "iPhone 16 Pro Max",
+                    "Other"
+                ];
+                iphoneModels.forEach(model => {
+                    const option = document.createElement("option");
+                    option.value = model;
+                    option.textContent = model;
+                    modelDropdown.appendChild(option);
+                });
+                imeiField.disabled = false;
+                imeiField.required = true;
+                icloudField.disabled = false;
+                icloudField.required = true;
+            } else if (deviceType === "Samsung") {
+                const samsungModels = [
+                    "Galaxy S20", "Galaxy S21", "Galaxy S22", "Galaxy S23", "Galaxy S24",
+                    "Galaxy Flip 4", "Galaxy Flip 5", "Galaxy Fold 4", "Galaxy Fold 5",
+                    "Other"
+                ];
+                samsungModels.forEach(model => {
+                    const option = document.createElement("option");
+                    option.value = model;
+                    option.textContent = model;
+                    modelDropdown.appendChild(option);
+                });
+                imeiField.disabled = false;
+                imeiField.required = true;
+                icloudField.disabled = false;
+                icloudField.required = true;
+            } else if (deviceType === "Game Console") {
+                const consoleModels = [
+                    "Nintendo NES", "Super Nintendo (SNES)", "Nintendo 64",
+                    "PlayStation 1", "PlayStation 2", "PlayStation 3",
+                    "PlayStation 4", "PlayStation 5", "Xbox 360",
+                    "Xbox One", "Xbox Series X", "Nintendo Switch", "Other"
+                ];
+                consoleModels.forEach(model => {
+                    const option = document.createElement("option");
+                    option.value = model;
+                    option.textContent = model;
+                    modelDropdown.appendChild(option);
+                });
+                imeiField.value = "N/A";
+                imeiField.disabled = true;
+                imeiField.required = false;
+                icloudField.value = "N/A";
+                icloudField.disabled = true;
+                icloudField.required = false;
+            }
+
+            commentField.value = "";
+            commentField.required = false;
+        }
+
+        function validateCommentField() {
+            const modelDropdown = document.getElementById("model");
+            const commentField = document.getElementById("comment");
+
+            if (modelDropdown.value === "Other") {
+                commentField.required = true;
+            } else {
+                commentField.required = false;
+            }
+        }
+
+        function sendEmail(event) {
+            event.preventDefault();
+
+            const form = document.getElementById("sellElectronicsForm");
+
+            emailjs.sendForm("service_txsvj3r", "template_ziffdla", form)
+                .then(
+                    function (response) {
+                        alert("Your request has been sent successfully!");
+                        console.log("Email sent successfully:", response);
+                        form.reset();
+                        updateModels(); // Reset form adjustments
+                    },
+                    function (error) {
+                        alert("There was an error sending your request. Please try again.");
+                        console.error("EmailJS error details:", error);
+                    }
+                );
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('background.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            margin: 20px auto;
+            max-width: 600px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            color: #fff;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #ddd;
+        }
+
+        input, select, textarea, button {
+            margin-top: 5px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background-color: #222;
+            color: #fff;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .qr-code {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .qr-code img {
+            max-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Sell Your Electronics - Stitch Fusion</h1>
+    </header>
+    <div class="container">
+        <h2>Get Paid for Your Electronics!</h2>
+        <p>Fill out the form below to get started.</p>
+
+        <form id="sellElectronicsForm" onsubmit="sendEmail(event)">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+
+            <label for="email">Your Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+            <label for="device_type">Device Type</label>
+            <select id="device_type" name="device_type" onchange="updateModels()" required>
+                <option value="" disabled selected>Select Device Type</option>
+                <option value="iPhone">iPhone</option>
+                <option value="Samsung">Samsung</option>
+                <option value="Game Console">Game Console</option>
+            </select>
+
+            <label for="model">Model</label>
+            <select id="model" name="model" onchange="validateCommentField()" required>
+                <option value="" disabled selected>Select Model</option>
+            </select>
+
+            <label for="imei">IMEI or Serial Number</label>
+            <input type="text" id="imei" name="imei" placeholder="Enter IMEI or serial number">
+
+            <label for="icloud_unlocked">iCloud or Google Account Unlocked?</label>
+            <select id="icloud_unlocked" name="icloud_unlocked">
+                <option value="" disabled selected>Select Option</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+
+            <label for="comment">Comments</label>
+            <textarea id="comment" name="comment" placeholder="Add additional details (required if 'Other')" rows="4"></textarea>
+
+            <button type="submit">Submit Offer</button>
+        </form>
+
+        <div class="qr-code">
+            <p>Scan to Visit Us:</p>
+            <img src="stitchfusion_qr_code.png" alt="QR Code">
+        </div>
+    </div>
+</body>
+</html>
+
